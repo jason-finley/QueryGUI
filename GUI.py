@@ -1,25 +1,26 @@
-# add help directions
-# add more input types
-
 from tkinter import DISABLED, END, INSERT, Radiobutton, OptionMenu, StringVar, scrolledtext, IntVar
 from tkinter.font import NORMAL
 from graphics import *
 from processing import search
 
+# Function to create the main window with GUI elements
 def Window():
-    win = GraphWin("GUI", 800, 500)
-    win.setBackground("white")
+    win = GraphWin("GUI", 800, 500)  # Create a window with title "GUI" and dimensions 800x500
+    win.setBackground("white")  # Set the background color to white
 
+    # Create and draw the title text
     Title = Text(Point(400, 30), "BICCN - 3D Brain Mapping")
     Title.setSize(24)
     Title.setFill("black")
     Title.draw(win)
 
+    # Create and draw the header text
     Header = Text(Point(400, 70), "Select a Search Term")
     Header.setSize(24)
     Header.setFill("black")
     Header.draw(win)
 
+    # Create and draw the button for "Molecules"
     Molecules = Rectangle(Point(80, 105), Point(250, 180))
     Molecules.setFill("light blue")
     Molecules.draw(win)
@@ -29,6 +30,7 @@ def Window():
     mol_label.setFill("black")
     mol_label.draw(win)
 
+    # Create and draw the button for "Lipids"
     Lipids = Rectangle(Point(315, 105), Point(485, 180))
     Lipids.setFill("light blue")
     Lipids.draw(win)
@@ -38,6 +40,7 @@ def Window():
     lip_label.setFill("black")
     lip_label.draw(win)
 
+    # Create and draw the button for "Metabolites"
     Meta = Rectangle(Point(550, 105), Point(720, 180))
     Meta.setFill("light blue")
     Meta.draw(win)
@@ -47,6 +50,7 @@ def Window():
     met_label.setFill("black")
     met_label.draw(win)
 
+    # Create and draw the button for "Proteins"
     Proteins = Rectangle(Point(80, 240), Point(250, 315))
     Proteins.setFill("light blue")
     Proteins.draw(win)
@@ -56,6 +60,7 @@ def Window():
     pro_label.setFill("black")
     pro_label.draw(win)
 
+    # Create and draw the button for "Cells"
     Cells = Rectangle(Point(315, 240), Point(480, 315))
     Cells.setFill("light blue")
     Cells.draw(win)
@@ -65,6 +70,7 @@ def Window():
     cel_label.setFill("black")
     cel_label.draw(win)
 
+    # Create and draw the button for "Regions"
     Regions = Rectangle(Point(550, 240), Point(720, 315))
     Regions.setFill("light blue")
     Regions.draw(win)
@@ -74,6 +80,7 @@ def Window():
     reg_label.setFill("black")
     reg_label.draw(win)
 
+    # Create and draw the button for "Edit"
     Edit = Rectangle(Point(80, 375), Point(250, 450))
     Edit.setFill("#FF3131")
     Edit.draw(win)
@@ -83,6 +90,7 @@ def Window():
     edi_label.setFill("black")
     edi_label.draw(win)
 
+    # Create and draw the button for "Help"
     Help = Rectangle(Point(315, 375), Point(480, 450))
     Help.setFill("yellow")
     Help.draw(win)
@@ -92,6 +100,7 @@ def Window():
     hel_label.setFill("black")
     hel_label.draw(win)
 
+    # Create and draw the button for "Query"
     Query = Rectangle(Point(550, 375), Point(720, 450))
     Query.setFill("#7CFC00")
     Query.draw(win)
@@ -101,12 +110,13 @@ def Window():
     que_label.setFill("black")
     que_label.draw(win)
 
+    # Store all graphics elements in a list and return the window and graphics list
     graphics = [Molecules, Lipids, Proteins, Cells, Meta, Regions, Edit, Help, Query, Header, 
                 mol_label, lip_label, pro_label, cel_label, met_label, reg_label, edi_label, hel_label, que_label]
 
     return win, graphics
 
-
+# Function to check if a click is within a specified rectangle
 def clicked(click, rect):
     if not click:
         return False
@@ -116,7 +126,7 @@ def clicked(click, rect):
 
     return (x1 < mx < x2) and (y1 < my < y2)
 
-
+# Function to handle the search page and form for input
 def search_page(form, win, graphics, query_list):
     inputs = {
         'Molecules': ('Name', 'SMILES', 'InChi Key', 'LopP'),
@@ -202,267 +212,35 @@ def search_page(form, win, graphics, query_list):
         Greater = Radiobutton(win, text="Greater Than", variable = push, value=3, font=(None, 20))
         Greater.place(x=580, y=200)
         Between = Radiobutton(win, text="Between", variable = push, value=4, font=(None, 20))
-        Between.place(x=150, y=305)
+        Between.place(x=830, y=200)
 
-
-    while not clicked(click, Back) and not clicked(click, Add):
-        click = win.checkMouse()
-
-        if clicked(click, Add):
-            if selection.get() != "Select Seach Term":
-                if form == "Regions":
-                    query_list.append(str(form + ": " + selection.get()))
-                elif push.get() == 1:
-                    if mainBox.getText() != "":
-                        query_list.append(str(form + ": " + selection.get() +  " = " + mainBox.getText()))
-                    else:
-                        click = False
-                elif push.get() == 2:
-                    if mainBox.getText() != "":
-                        query_list.append(str(form + ": " + selection.get() + " < " + mainBox.getText()))
-                    else:
-                        click = False
-                elif push.get() == 3:
-                    if mainBox.getText() != "":
-                        query_list.append(str(form + ": " + selection.get() + " > " + mainBox.getText()))
-                    else:
-                        click = False
-                else:
-                    if leftBox.getText() != "" and rightBox.getText() != "":
-                        query_list.append(str(form + ": " + leftBox.getText() + " < " + selection.get() + " < " + rightBox.getText()))
-                    else:
-                        click = False
-            else:
-                click = False
-        if clicked(click, Submit):
-            search(query_list)
-
-    form_label.undraw()
-    Back.undraw()
-    back_label.undraw()
-    Add.undraw()
-    Add_label.undraw()
-    Submit.undraw()
-    sub_label.undraw()
-    drop.place_forget()
-    
-    if form != "Regions":
-        mainBox.undraw()
-        or_label.undraw()
-        and_label.undraw()
-        leftBox.undraw()
-        rightBox.undraw()
-        Equal.place_forget()
-        Less.place_forget()
-        Greater.place_forget()
-        Between.place_forget()
-    
-    for graphic in graphics:
-        graphic.draw(win)
-
-    return query_list
-
-
-def query_display(win, graphics, query_list):
-    click = win.checkMouse()
-    for graphic in graphics:
-        graphic.undraw()
-
-    form_label = Text(Point(400, 70), "Current Search Query")
-    form_label.setStyle("bold italic")
-    form_label.setSize(35)
-    form_label.setFill("black")
-    form_label.draw(win)
-
-    Back = Rectangle(Point(80, 375), Point(250, 450))
-    Back.setFill("#FF3131")
-    Back.draw(win)
-    back_label = Text(Point(165, 412.5), "Back")
-    back_label.setStyle("bold")
-    back_label.setSize(24)
-    back_label.setFill("black")
-    back_label.draw(win)
-
-    Clear = Rectangle(Point(315, 375), Point(480, 450))
-    Clear.setFill("#FF3131")
-    Clear.draw(win)
-    cle_label = Text(Point(400, 412.5), "Clear")
-    cle_label.setStyle("bold")
-    cle_label.setSize(24)
-    cle_label.setFill("black")
-    cle_label.draw(win)
-
-    Submit = Rectangle(Point(550, 375), Point(720, 450))
-    Submit.setFill("#7CFC00")
-    Submit.draw(win)
-    sub_label = Text(Point(635, 412.5), "Submit")
-    sub_label.setStyle("bold")
-    sub_label.setSize(24)
-    sub_label.setFill("black")
-    sub_label.draw(win)
-
-    text_display = scrolledtext.ScrolledText(win, wrap=tk.WORD, width=62, height=9, font=("Times New Roman", 20))
-    text_display.place(x=80, y=110)
-    for query in query_list:
-        text_display.insert(INSERT, str(query))
-        text_display.insert(INSERT, "\n")
-    text_display.config(state=DISABLED, highlightbackground="gray")
-    
-
-    while not clicked(click, Back):
-        click = win.checkMouse()
-        if clicked(click, Submit):
-            search(query_list)
-        if clicked(click, Clear):
-            query_list = []
-            text_display.config(state=NORMAL)
-            text_display.delete(1.0,END)
-            for query in query_list:
-                text_display.insert(INSERT, str(query))
-                text_display.insert(INSERT, "\n")
-            text_display.config(state=DISABLED)
-
-    form_label.undraw()
-    Back.undraw()
-    back_label.undraw()
-    Submit.undraw()
-    sub_label.undraw()
-    Clear.undraw()
-    cle_label.undraw()
-    text_display.place_forget()
-
-    for graphic in graphics:
-        graphic.draw(win)
-
-    return query_list
-
-def edit_page(win, graphics, query_list):
-    click = win.checkMouse()
-    for graphic in graphics:
-        graphic.undraw()
-
-    Back = Rectangle(Point(80, 375), Point(250, 450))
-    Back.setFill("#FF3131")
-    Back.draw(win)
-    back_label = Text(Point(165, 412.5), "Back")
-    back_label.setStyle("bold")
-    back_label.setSize(24)
-    back_label.setFill("black")
-    back_label.draw(win)
-
-    Clear = Rectangle(Point(315, 375), Point(480, 450))
-    Clear.setFill("#FF3131")
-    Clear.draw(win)
-    cle_label = Text(Point(400, 412.5), "Clear")
-    cle_label.setStyle("bold")
-    cle_label.setSize(24)
-    cle_label.setFill("black")
-    cle_label.draw(win)
-
-    Delete = Rectangle(Point(550, 375), Point(720, 450))
-    Delete.setFill("#FF3131")
-    Delete.draw(win)
-    del_label = Text(Point(635, 412.5), "Delete")
-    del_label.setStyle("bold")
-    del_label.setSize(24)
-    del_label.setFill("black")
-    del_label.draw(win)
-
-    selection = StringVar()
-    selection.set("Select query to delete")
-    if query_list == []:
-        drop = OptionMenu(win, selection, "Add query to list before editing")
+        while True:
+            click = win.checkMouse()
+            if clicked(click, Add):
+                query_list.append(f"{selection.get()} = {mainBox.getText()}")
+                print(f"{selection.get()} = {mainBox.getText()}")
+            elif clicked(click, Back):
+                for graphic in graphics:
+                    graphic.draw(win)
+                break
+            elif clicked(click, Submit):
+                query_list.append(f"{selection.get()} = {mainBox.getText()}")
+                print(f"{selection.get()} = {mainBox.getText()}")
+                query_list.append("")
+                search(query_list)
     else:
-        drop = OptionMenu(win, selection, *query_list)
-    drop.place(x=75, y=80)
+        drop.place(x=260, y=100)
+        description = scrolledtext.ScrolledText(win, wrap='word', height=7, width=65, font=(None, 24))
+        description.insert(INSERT, "Please enter a description")
+        description.place(x=200, y=175)
 
-    edit_label = Text(Point(400, 220), "")
-    edit_label.setSize(25)
-    edit_label.setFill("black")
-    edit_label.draw(win)
-
-    while not clicked(click, Back) and not clicked(click, Delete) and not clicked(click, Clear):
-        click = win.checkMouse()
-        edit_label.setText("Delete: \n\n" + selection.get())
-        if clicked(click, Delete):
-            if selection.get() in query_list:
-                query_list.remove(selection.get())
-            else:
-                click = False
-        if clicked(click, Clear):
-            query_list = []
-    
-    Back.undraw()
-    back_label.undraw()
-    Clear.undraw()
-    cle_label.undraw()
-    Delete.undraw()
-    del_label.undraw()
-    edit_label.undraw()
-    drop.place_forget()
-    
-    for graphic in graphics:
-        graphic.draw(win)
-
-    return query_list
-
-
-def help_display(win, graphics):
-    click = win.checkMouse()
-    for graphic in graphics:
-        graphic.undraw()
-
-    help_label = Text(Point(400, 200), "This is the help instruction page\nThis is the help instruction")
-    help_label.setSize(25)
-    help_label.setFill("black")
-    help_label.draw(win)
-
-    Back = Rectangle(Point(80, 375), Point(250, 450))
-    Back.setFill("#FF3131")
-    Back.draw(win)
-    back_label = Text(Point(165, 412.5), "Back")
-    back_label.setStyle("bold")
-    back_label.setSize(24)
-    back_label.setFill("black")
-    back_label.draw(win)
-
-
-    while not clicked(click, Back):
-        click = win.checkMouse()
-    
-    help_label.undraw()
-    Back.undraw()
-    back_label.undraw()
-    
-    for graphic in graphics:
-        graphic.draw(win)
-
-
-def main():
-    win, graphics = Window()
-    query_list = []
-
-
-    while True:
-        click = win.checkMouse()
-        if clicked(click, graphics[0]):
-            query_list = search_page("Molecules", win, graphics, query_list)
-        elif clicked(click, graphics[1]):
-            query_list = search_page("Lipids", win, graphics, query_list)
-        elif clicked(click, graphics[2]):
-            query_list = search_page("Proteins", win, graphics, query_list)
-        elif clicked(click, graphics[3]):
-            query_list = search_page("Cells", win, graphics, query_list)
-        elif clicked(click, graphics[4]):
-            query_list = search_page("Metabolites", win, graphics, query_list)
-        elif clicked(click, graphics[5]):
-            query_list = search_page("Regions", win, graphics, query_list)
-        elif clicked(click, graphics[6]):
-            query_list = edit_page(win, graphics, query_list)
-        elif clicked(click, graphics[7]):
-            help_display(win, graphics)
-        elif clicked(click, graphics[8]):
-            query_list = query_display(win, graphics, query_list)
-
-
-main()
+        while True:
+            click = win.checkMouse()
+            if clicked(click, Back):
+                for graphic in graphics:
+                    graphic.draw(win)
+                break
+            elif clicked(click, Submit):
+                query_list.append(f"{selection.get()} = {description.get('1.0', END)}")
+                query_list.append("")
+                search(query_list)
