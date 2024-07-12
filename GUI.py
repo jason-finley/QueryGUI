@@ -1,7 +1,7 @@
 from tkinter import DISABLED, END, INSERT, Radiobutton, OptionMenu, StringVar, scrolledtext, IntVar
 from tkinter.font import NORMAL
 from graphics import *
-from processing import search
+
 
 # Function to create the main window with GUI elements
 def Window():
@@ -180,7 +180,7 @@ def search_page(form, win, graphics, query_list):
     drop.config(width=16, direction='right')
     drop.place(x=75, y=80)
 
-    if form != "Regions":
+    if form == "Regions":
         mainBox = Entry(Point(400, 250), 46)
         mainBox.setSize(24)
         mainBox.draw(win)
@@ -227,7 +227,7 @@ def search_page(form, win, graphics, query_list):
                 query_list.append(f"{selection.get()} = {mainBox.getText()}")
                 print(f"{selection.get()} = {mainBox.getText()}")
                 query_list.append("")
-                search(query_list)
+                #search(query_list)
     else:
         drop.place(x=260, y=100)
         description = scrolledtext.ScrolledText(win, wrap='word', height=7, width=65, font=(None, 24))
@@ -243,4 +243,24 @@ def search_page(form, win, graphics, query_list):
             elif clicked(click, Submit):
                 query_list.append(f"{selection.get()} = {description.get('1.0', END)}")
                 query_list.append("")
-                search(query_list)
+                #search(query_list)
+
+
+def main():
+    win, graphics = Window()
+    boxes = graphics[0:9]
+    labels = graphics[10:]
+
+    query_list = []
+    while True:
+        click = win.checkMouse()
+        for j in range(len(boxes)):
+                if clicked(click, boxes[j]):
+                    for graphic in graphics:
+                        graphic.undraw()
+                    if j <= 6:
+                        form = labels[j].getText()
+                        search_page(form, win, graphics, query_list)
+    win.close()
+
+main()
