@@ -191,7 +191,7 @@ def search_page(form, win, graphics, query_list):
     # Create input boxes and radio buttons based on form type
     if form != "Regions":
         # Main input box
-        mainBox = Entry(Point(400, 250), 46)
+        mainBox = Entry(Point(400, 250), 38)
         mainBox.setSize(24)
         mainBox.draw(win)
         
@@ -219,13 +219,13 @@ def search_page(form, win, graphics, query_list):
         push = IntVar()
         push.set('1')
         Equal = Radiobutton(win, text="Equal To", variable = push, value=1, font=(None, 20))
-        Equal.place(x=80, y=200)
+        Equal.place(x=80, y=170)
         Less = Radiobutton(win, text="Less Than", variable = push, value=2, font=(None, 20))
-        Less.place(x=330, y=200)
+        Less.place(x=315, y=170)
         Greater = Radiobutton(win, text="Greater Than", variable = push, value=3, font=(None, 20))
-        Greater.place(x=580, y=200)
+        Greater.place(x=545, y=170)
         Between = Radiobutton(win, text="Between", variable = push, value=4, font=(None, 20))
-        Between.place(x=150, y=305)
+        Between.place(x=90, y=298)
 
     # Handle click events
     while not clicked(click, Back) and not clicked(click, Add):
